@@ -59,7 +59,7 @@ export class AutoComplete {
 
   filterQuery() {
     this.filteredList = this.items.filter((el: any) => {
-      return el.name.toLowerCase().indexOf(this.query) > -1;
+      return el.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
     });
   }
 
@@ -128,7 +128,7 @@ export class AutoComplete {
     let listGroup = document.getElementById('list-group');
     let listItem = document.getElementById('true');
     if (listItem) {
-      listGroup.scrollTop = (listItem.offsetTop - 100);
+      listGroup.scrollTop = (listItem.offsetTop - 200);
     }
 
   }
@@ -138,7 +138,6 @@ export class AutoComplete {
     this.selectedItem.selected = true;
     this.query = item.name;
     this.filteredList = [];
-    //this.opened = false;
   }
 
   showAll(input: any) {

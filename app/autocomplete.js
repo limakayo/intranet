@@ -43,7 +43,7 @@ var AutoComplete = (function () {
     AutoComplete.prototype.filterQuery = function () {
         var _this = this;
         this.filteredList = this.items.filter(function (el) {
-            return el.name.toLowerCase().indexOf(_this.query) > -1;
+            return el.name.toLowerCase().indexOf(_this.query.toLowerCase()) > -1;
         });
     };
     AutoComplete.prototype.filter = function (event) {
@@ -105,7 +105,7 @@ var AutoComplete = (function () {
         var listGroup = document.getElementById('list-group');
         var listItem = document.getElementById('true');
         if (listItem) {
-            listGroup.scrollTop = (listItem.offsetTop - 100);
+            listGroup.scrollTop = (listItem.offsetTop - 200);
         }
     };
     AutoComplete.prototype.select = function (item) {
@@ -113,7 +113,6 @@ var AutoComplete = (function () {
         this.selectedItem.selected = true;
         this.query = item.name;
         this.filteredList = [];
-        //this.opened = false;
     };
     AutoComplete.prototype.showAll = function (input) {
         input.select();
