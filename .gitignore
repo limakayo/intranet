@@ -1,0 +1,7 @@
+typings/**
+node_modules
+*.js
+*.js.map
+
+!systemjs.config.js
+!typings/typings.d.ts

@@ -1,0 +1,72 @@
+<h3>Cobrança</h3>
+
+<div class="row cobranca">
+	<div class="col-md-8">
+			<label for="cliente">Cliente</label>
+
+			<autocomplete *ngIf="clientes" [items]="clientes" (onSelectedItem)="onSelectedCliente($event)"></autocomplete>
+	</div>
+	<div *ngIf="totalCobranca" class="col-md-2 col-md-offset-2" style="text-align: right">
+			<div class="form-group">
+				<label>Total a receber</label>
+				<div class="input-group">
+					<span class="input-group-addon">R$</span>
+					<input readonly="readonly" class="form-control valor red" [value]="totalCobranca"/>
+				</div>
+			</div>
+	</div>
+</div>
+
+<div class="row" *ngIf="ordens">
+	<div class="col-md-8">
+		<h4>Ordens</h4>
+		<hr>
+		<div class="well" *ngFor="let ordem of ordens">
+			<div class="row">
+				<div class="col-md-6">
+					<h4 class="cobranca-numero">{{ ordem.numero}}</h4>
+				</div>
+				<div class="col-md-6" style="text-align:right" *ngIf="ordem.data_pagamento && ordem.forma_pagamento">
+					<span class="cobranca-pago">Pago</span>
+				</div>
+			</div>
+			<form role="form" style="margin-bottom:0">
+				<div class="row">
+					<div class="col-md-3 form-group">
+						<div class="input-group">
+							<span class="input-group-addon">R$</span>
+							<input [(ngModel)]="ordem.valor_total" type="text" placeholder="Valor" class="form-control cobranca-total" readonly="readonly">
+						</div>
+					</div>
+					<div class="col-md-3 form-group">
+						<input [(ngModel)]="ordem.forma_pagamento" (blur)="updateOrdem(ordem)" type="text" placeholder="Forma Pagamento" class="form-control">
+					</div>
+					<div class="col-md-4 form-group">
+						<input [(ngModel)]="ordem.data_pagamento" (blur)="updateOrdem(ordem)" type="date" placeholder="Data Pagamento" class="form-control">
+					</div>
+					<div class="col-md-2 form-group">
+						<input [(ngModel)]="ordem.numero_nfe" (blur)="updateOrdem(ordem)" type="text" placeholder="Nº NFe" class="form-control">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="col-md-4" *ngIf="selectedCliente">
+		<h4>Cliente</h4>
+		<hr>
+		<table class="table table-bordered">
+			<tr>
+				<th scope="row">Nome</th>
+				<td>{{ selectedCliente.nome }}</td>
+			</tr>
+		</table>
+		<h4>Débito</h4>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="input-group">
+					<span class="input-group-addon">R$</span>
+					<input type="text" [value]="total" readonly="readonly" class="form-control cobranca-debito">
+				</div>
+			</div>
+	</div>
+</div>

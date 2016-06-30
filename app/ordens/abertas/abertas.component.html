@@ -1,0 +1,99 @@
+<h3>Abertas</h3>
+
+<div class="row">
+	<div class="form-group col-md-4">
+		<label for="cliente">Cliente</label><br>
+		<p-autoComplete [(ngModel)]="cliente" [suggestions]="filteredClientes" (completeMethod)="search($event)" field="nome" [size]="30"
+	    placeholder="Clientes" [minLength]="1" (onSelect)="changeCliente(cliente)" inputStyleClass="form-control"></p-autoComplete>
+	</div>
+</div>
+
+<h4 *ngIf="ordens && ordens.length == 0">
+	Não foram encontradas ordens abertas.
+</h4>
+
+<div class="row" *ngIf="ordens && ordens.length > 0">
+	<div class="col-md-8">
+		<h3>Ordens</h3>
+		<div class="row">
+			<div *ngFor="let ordem of ordens" class="col-md-4">
+				<h3><a [routerLink]="['/Ordens/Controle', {id: ordem.numero}]">{{ ordem.numero }}</a></h3>
+
+				<div class="well andamento">
+			  	{{ ordem.andamento }}
+			  </div>
+
+				<table class="table table-bordered" *ngIf="!ordem.entregue">
+			      <tr>
+			        <th scope="row">Tipo</th>
+			        <td>{{ ordem.equipamento.nome }}</td>
+			      </tr>
+			      <tr>
+			        <th scope="row">Marca</th>
+			        <td>{{ ordem.marca }}</td>
+			      </tr>
+			      <tr>
+			        <th scope="row">Modelo</th>
+			        <td>{{ ordem.modelo }}</td>
+			      </tr>
+			      <tr>
+			        <th scope="row">Série</th>
+			        <td>{{ ordem.serie }}</td>
+			      </tr>
+			    </table>
+
+			    <div class="form-group">
+		        <label for="defeito">Defeito:</label>
+		        <textarea class="form-control" id="defeito" [ngModel]="ordem.defeito" readonly="readonly"></textarea>
+		      </div>
+
+		      <div class="form-group">
+            <label for="solucao">Solução:</label>
+            <textarea class="form-control" id="solucao" [ngModel]="ordem.solucao" readonly="readonly"></textarea>
+          </div>
+
+			    <table class="table table-bordered table-andamento" *ngIf="ordem.createdAt">
+		        <tr>
+		        	<th>Aberta</th>
+		        	<td>{{ stringAsDate(ordem.createdAt) | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+		        </tr>
+		      </table>
+
+		      <table class="table table-bordered table-andamento" *ngIf="ordem.data_hora_aprovacao">
+	          <tr>
+		          <th>{{ getAprovacao(ordem) }}</th>
+		          <td>{{ stringAsDate(ordem.data_hora_aprovacao) | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+	          </tr>
+	        </table>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<h3>Cliente</h3>
+		<hr>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="table-responsive">
+		      <table class="table table-bordered">
+		        <tr>
+		          <th scope="row">Nome</th>
+		          <td>{{ cliente.nome }}</td>
+		        </tr>
+		        <tr>
+		          <th scope="row">Contato</th>
+		          <td>{{ cliente.contato }}</td>
+		        </tr>
+		        <tr>
+		          <th scope="row">E-mail</th>
+		          <td>{{ cliente.email }}</td>
+		        </tr>
+		        <tr>
+		          <th scope="row">Telefone</th>
+		          <td>{{ cliente.telefone }}</td>
+		        </tr>
+		      </table>
+		    </div>
+			</div>
+		</div>
+	</div>
+</div>

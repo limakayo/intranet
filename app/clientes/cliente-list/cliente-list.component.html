@@ -1,0 +1,41 @@
+<search-box (searchChange)="myValueChange($event)"></search-box>
+
+<div class="row">
+	<div class="col-md-6">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Nome</th>
+					<th>Ação</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let cliente of clientes | search : term" (click)="goToDetail(cliente)">
+					<td> {{ cliente.nome }} </td>
+					<td> <button class="btn btn-default" (click)="delete(cliente, $event)">Delete</button> </td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<!--<ul class="clientes">
+	<li *ngFor="let cliente of clientes | search : term" (click)="goToDetail(cliente)" [class.selected]="cliente === selectedCliente">
+		<span class="cliente-element">
+			{{ cliente.nome }}
+		</span>
+		<button class="delete-button" (click)="delete(cliente, $event)">Delete</button>
+	</li>
+</ul>-->
+
+<div class="row">
+	<div class="col-md-4">
+	  <div class="form-group">
+		<label>Novo Cliente:</label>
+		<input #novoCliente class="form-control"/>
+		<button (click)="addCliente(novoCliente.value); novoCliente.value=''" class="btn btn-default">Add Cliente</button>
+		<p class="bg-danger" *ngIf="errorMessage">{{ errorMessage }}</p>
+		<p class="bg-success" *ngIf="successMessage">{{ successMessage }}</p>
+	  </div>
+	</div>
+</div>

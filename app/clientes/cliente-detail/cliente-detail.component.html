@@ -1,0 +1,12 @@
+<div *ngIf="cliente">
+  <h2>{{ editNome }} details!</h2>
+  <label>id: </label>{{ cliente._id }}
+  <div>
+    <label>Nome:</label>
+    <input [(ngModel)]="editNome" placeholder="nome"/>
+  </div>
+  <button (click)="goToClientes()">Voltar</button>
+  <button (click)="save()">Salvar</button>
+</div>
+<div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+<div class="success" *ngIf="successMessage">{{ successMessage }}</div>

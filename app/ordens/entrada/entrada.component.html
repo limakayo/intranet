@@ -1,0 +1,106 @@
+<div class="row" *ngIf="ordemCadastrada">
+	<div class="col-md-12">
+		<div class="alert alert-success" role="alert">
+			{{ mensagem }}
+			<strong>OS: <span (click)="goToControle(ordemCadastrada)">{{ ordemCadastrada.numero }}</span></strong>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6">
+		<h3 style="margin-top:0">Entrada</h3>
+  </div>
+	<div class="col-md-6 entrada-numero-os">
+		<h3 style="margin-top:0">OS: {{ numero }}</h3>
+	</div>
+</div>
+<hr>
+<div class="row">
+
+	<form #ordemForm="ngForm" (ngSubmit)="add(ordemForm.value)">
+
+		<input type="hidden" class="form-control" [(ngModel)]="numero" ngControl="numero">
+
+		<div class="form-group col-md-4">
+			<label for="cliente">Cliente</label><br>
+			<p-autoComplete [(ngModel)]="cliente" [suggestions]="filteredClientes" (completeMethod)="search($event)" field="nome" [size]="30"
+		    placeholder="Clientes" [minLength]="1" ngControl="cliente" inputStyleClass="form-control"></p-autoComplete>
+		</div>
+
+		<div class="form-group col-md-2">
+			<label for="equipamento">Equipamento</label>
+			<select [ngModel]="equipamento" ngControl="equipamento" class="form-control" id="equipamento">
+				<option *ngFor="let equipamento of equipamentos" [ngValue]="equipamento">
+					{{ equipamento.nome }}
+				</option>
+			</select>
+		</div>
+
+		<div class="form-group col-md-2">
+			<label for="marca">Marca</label>
+			<input [ngModel]="marca" ngControl="marca" class="form-control" id="marca">
+		</div>
+
+		<div class="form-group col-md-2">
+			<label for="modelo">Modelo</label>
+			<input [ngModel]="modelo" ngControl="modelo" class="form-control" id="modelo">
+		</div>
+
+		<div class="form-group col-md-2">
+			<label for="serie">Série</label>
+			<input [ngModel]="serie" ngControl="serie" class="form-control" id="serie" maxlength="5">
+		</div>
+
+		<div class="form-group col-md-2">
+			<label for="origem">Origem</label>
+			<input [ngModel]="origem" ngControl="origem" class="form-control" id="origem">
+		</div>
+
+		<div class="form-group col-md-4">
+			<label for="defeito">Defeito</label>
+			<input [ngModel]="defeito" ngControl="defeito" class="form-control" id="defeito">
+		</div>
+
+		<div class="form-group col-md-4">
+			<label for="observacoes">Observações</label>
+			<input [ngModel]="observacoes" ngControl="observacoes" class="form-control" id="observacoes">
+		</div>
+
+		<div class="form-group col-md-4">
+			<label>Acessórios</label><br>
+			<div class="checkboxgroup">
+	          <div *ngFor="let acessorio of acessorios">
+	            <label>
+	              <input type="checkbox" [(ngModel)]="acessorio.selected" (ngModelChange)="onCheckboxChange(acessorio)"> 
+	              {{ acessorio.nome }}
+	            </label>
+	          </div>
+	        </div>
+		</div>
+
+		<div class="form-group col-md-4">
+	      <label>Atendimento:</label>
+	      <div>
+	        <label class="radio-inline" *ngFor="let atendimento of atendimentos">
+	          <input type="radio" name="atendimento" (change)="onAtendimentoChange(atendimento)"> {{ atendimento.nome }}
+	        </label>
+	      </div>
+	    </div>
+	    <div class="form-group col-md-4">
+	      <label>Transporte:</label>
+	      <div>
+	        <label class="radio-inline" *ngFor="let transporte of transportes">
+	          <input type="radio" name="transporte" (change)="onTransporteChange(transporte)"> {{ transporte.nome }}
+	        </label>
+	      </div>
+	    </div>
+
+
+		<div class="col-md-12">
+			<button type="submit" class="btn btn-primary">Cadastrar</button>
+		</div>
+
+
+	</form>
+
+</div>

@@ -9,17 +9,33 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var autocomplete_1 = require('./autocomplete');
+var router_1 = require('@angular/router');
+var auth_service_1 = require('./shared/auth.service');
+var angular2_jwt_1 = require('angular2-jwt');
 var AppComponent = (function () {
-    function AppComponent() {
+    function AppComponent(auth) {
+        this.auth = auth;
     }
+    AppComponent.prototype.ngOnInit = function () {
+        if (angular2_jwt_1.tokenNotExpired())
+            this.getUser();
+    };
+    AppComponent.prototype.getUser = function () {
+        var _this = this;
+        this.auth.getUser().subscribe(function (data) {
+            if (data.app_metadata.roles[0] == "admin")
+                _this.auth.userIsAdmin = true;
+        });
+    };
     AppComponent = __decorate([
         core_1.Component({
             selector: 'my-app',
-            template: "\n    <h1>Angular 2 AutoComplete</h1>\n    <hr>\n    <div class=\"row\">\n      <div class=\"col-md-6\">\n          <autocomplete></autocomplete>\n      </div>\n    </div>\n    ",
-            directives: [autocomplete_1.AutoComplete]
+            moduleId: module.id,
+            templateUrl: 'app.component.html',
+            directives: [router_1.ROUTER_DIRECTIVES],
+            providers: [auth_service_1.AuthService]
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [auth_service_1.AuthService])
     ], AppComponent);
     return AppComponent;
 }());
