@@ -15,7 +15,7 @@
 		<h3>Ordens</h3>
 		<div class="row">
 			<div *ngFor="let ordem of ordens" class="col-md-4">
-				<h3><a [routerLink]="['/Ordens/Controle', {id: ordem.numero}]">{{ ordem.numero }}</a></h3>
+				<h3><a [routerLink]="['/ordens/controle', ordem.numero]">{{ ordem.numero }}</a></h3>
 				<table class="table table-bordered" *ngIf="!ordem.entregue">
 			      <tr>
 			        <th scope="row">Tipo</th>

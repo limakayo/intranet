@@ -1,22 +1,20 @@
 <p-growl [value]="msgs"></p-growl>
 
-<h3 style="margin-top:0">
-  Controle
-</h3>
+<h3 style="margin-top:0">Controle</h3>
 
 <div class="row">
   <div class="col-md-1">
     <label for="ordem">NºOS:</label>
     <input #input [(ngModel)]="numero" class="form-control" maxlength="5" id="ordem" (keyup.enter)='goToControle(input.value)'>
   </div>
-  
-  <menu-admin 
-    [avaliadas]="avaliadas" 
-    [abertas]="abertas" 
-    [aprovadas]="aprovadas" 
+
+  <menu-admin
+    [avaliadas]="avaliadas"
+    [abertas]="abertas"
+    [aprovadas]="aprovadas"
     [reprovadas]="reprovadas"
     [garantias]="garantias"></menu-admin>
-  
+
   <div class="col-md-1">
     <label for="serie">Série</label>
     <input type="text" class="form-control" id="serie">
@@ -25,14 +23,15 @@
 
 <hr style="margin-bottom:5px">
 
-{{ errorMessage }} 
+{{ errorMessage }}
 
 <form #ordemForm="ngForm" (ngSubmit)="updateOrdem(ordemForm.value)">
 
   <div class="row" *ngIf="ordem">
 
-    <input type="hidden" [ngModel]="ordem._id" ngControl="_id">
-  
+    <input type="hidden" [(ngModel)]="ordem._id" ngControl="_id">
+    <input type="hidden" [(ngModel)]="numero" ngControl="numero">
+
     <div class="col-md-12">
       <h3 *ngIf="ordem" class="controle-os">OS: {{ ordem.numero }}</h3>
     </div>
@@ -59,10 +58,10 @@
           <td>{{ ordem.serie }}</td>
         </tr>
       </table>
-      
+
       <div class="form-group">
         <label for="observacoes">Observações:</label>
-        <input ngControl="observacoes" type="text" class="form-control" id="observacoes" [(ngModel)]="ordem.observacoes">
+        <input type="text" class="form-control" id="observacoes" [(ngModel)]="ordem.observacoes" ngControl="observacoes">
       </div>
 
       <div class="form-group">
@@ -70,7 +69,7 @@
         <div class="checkboxgroup">
           <div *ngFor="let acessorio of acessorios">
             <label>
-              <input type="checkbox" [(ngModel)]="acessorio.selected" (ngModelChange)="onAcessorioChange(acessorio)"> 
+              <input type="checkbox" [ngModel]="acessorio.selected" (ngModelChange)="onAcessorioChange(acessorio)">
               {{ acessorio.nome }}
             </label>
           </div>
@@ -90,14 +89,14 @@
       <table class="table table-bordered table-andamento" *ngIf="ordem.createdAt">
         <tr>
         <th>Aberta</th>
-        <td>{{ stringAsDate(ordem.createdAt) | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+        <td>{{ ordem.createdAt | date:'dd/MM/yyyy HH:mm:ss' }}</td>
         </tr>
       </table>
 
       <table class="table table-bordered table-andamento" *ngIf="ordem.data_hora_orcamento">
         <tr>
         <th>Orçamento</th>
-        <td>{{ stringAsDate(ordem.data_hora_orcamento) | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+        <td>{{ ordem.data_hora_orcamento | date:'dd/MM/yyyy HH:mm:ss' }}</td>
         </tr>
       </table>
 
@@ -105,7 +104,7 @@
         <table class="table table-bordered table-andamento" *ngIf="ordem.data_hora_aprovacao">
           <tr>
           <th>{{ getAprovacao() }}</th>
-          <td>{{ stringAsDate(ordem.data_hora_aprovacao) | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+          <td>{{ ordem.data_hora_aprovacao | date:'dd/MM/yyyy HH:mm:ss' }}</td>
           </tr>
         </table>
 
@@ -123,11 +122,11 @@
       <table class="table table-bordered table-andamento" *ngIf="ordem.data_hora_pronto">
         <tr>
           <th>Pronto</th>
-          <td>{{ stringAsDate(ordem.data_hora_pronto) | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+          <td>{{ ordem.data_hora_pronto | date:'dd/MM/yyyy HH:mm:ss' }}</td>
           <td><input type="checkbox" [(ngModel)]="pronto" (ngModelChange)="onProntoChange(pronto)"></td>
         </tr>
       </table>
-    
+
       <div class="checkbox" *ngIf="!ordem.data_hora_pronto">
         <label>
           <input type="checkbox" [(ngModel)]="pronto" (ngModelChange)="onProntoChange(pronto)"> Pronto
@@ -139,7 +138,7 @@
         <table class="table table-bordered table-andamento" *ngIf="ordem.data_hora_fechado">
           <tr>
             <th>Fechado</th>
-            <td>{{ stringAsDate(ordem.data_hora_fechado) | date:'dd/MM/yyyy HH:mm:ss' }}</td> 
+            <td>{{ ordem.data_hora_fechado | date:'dd/MM/yyyy HH:mm:ss' }}</td>
             <td><input type="checkbox" [(ngModel)]="fechado" (ngModelChange)="onFechadoChange(fechado)"></td>
           </tr>
         </table>
@@ -148,15 +147,15 @@
           <label>
             <input type="checkbox" [(ngModel)]="fechado" (ngModelChange)="onFechadoChange(fechado)"> Fechado
           </label>
-        </div>   
+        </div>
 
-      </div>   
+      </div>
 
       <div *ngIf="fechado">
         <table class="table table-bordered table-andamento" *ngIf="ordem.data_hora_entregue">
           <tr>
           <th>Entregue</th>
-          <td>{{ stringAsDate(ordem.data_hora_entregue) | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+          <td>{{ ordem.data_hora_entregue | date:'dd/MM/yyyy HH:mm:ss' }}</td>
           <td><input type="checkbox" [(ngModel)]="entregue" (ngModelChange)="onEntregueChange(entregue)"></td>
           </tr>
         </table>
@@ -175,30 +174,30 @@
 
       <div class="form-group">
         <label for="defeito_tecnico">Defeito Técnico:</label>
-        <textarea ngControl="defeito_tecnico" class="form-control" id="defeito_tecnico" [ngModel]="ordem.defeito_tecnico" readonly="readonly"></textarea>
+        <textarea class="form-control" id="defeito_tecnico" [(ngModel)]="ordem.defeito_tecnico" ngControl="defeito_tecnico" readonly="readonly"></textarea>
       </div>
 
       <div class="form-group">
         <label for="solucao_tecnica">Solução Técnica:</label>
-        <textarea ngControl="solucao_tecnica" class="form-control" id="solucao_tecnica" [ngModel]="ordem.solucao_tecnica" readonly="readonly"></textarea>
+        <textarea class="form-control" id="solucao_tecnica" [(ngModel)]="ordem.solucao_tecnica" ngControl="solucao_tecnica" readonly="readonly"></textarea>
       </div>
 
       <div class="form-group">
         <label for="defeito">Defeito:</label>
-        <textarea ngControl="defeito" class="form-control" id="defeito" [ngModel]="ordem.defeito"></textarea>
+        <textarea class="form-control" id="defeito" [(ngModel)]="ordem.defeito" ngControl="defeito"></textarea>
       </div>
 
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
             <label for="solucao">Solução:</label>
-            <textarea ngControl="solucao" class="form-control" id="solucao" [ngModel]="ordem.solucao" rows="4"></textarea>
+            <textarea class="form-control" id="solucao" [(ngModel)]="ordem.solucao" rows="4" ngControl="solucao"></textarea>
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
             <label for="pecas">Peças:</label>
-            <textarea ngControl="pecas" class="form-control" id="pecas" [ngModel]="ordem.pecas" rows="4"></textarea>
+            <textarea class="form-control" id="pecas" [(ngModel)]="ordem.pecas" rows="4" ngControl="pecas"></textarea>
           </div>
         </div>
       </div>
@@ -235,11 +234,12 @@
           </div>
         </div>
       </div>
+
     </div>
 
     <div class="col-md-3">
       <h4>Cliente</h4>
-      
+
       <div class="table-responsive">
         <table class="table table-bordered">
           <tr>
@@ -263,7 +263,7 @@
 
       <div class="form-group">
         <label for="origem">Origem:</label>
-        <input ngControl="origem" type="text" class="form-control" id="origem" [(ngModel)]="ordem.origem">
+        <input type="text" class="form-control" id="origem" [(ngModel)]="ordem.origem" ngControl="origem">
       </div>
 
       <div class="row">
@@ -272,7 +272,7 @@
             <label>Atendimento:</label>
             <div class="radio" *ngFor="let atendimento of atendimentos">
               <label>
-                <input type="radio" name="atendimento" [ngModel]="{checked: atendimento._id == atendimentoSelecionado._id }" (change)="onAtendimentoChange(atendimento)"> {{ atendimento.nome }}
+                <input type="radio" [ngModel]="{checked: atendimento._id == atendimentoSelecionado._id }" (change)="onAtendimentoChange(atendimento)"> {{ atendimento.nome }}
               </label>
             </div>
           </div>
@@ -283,26 +283,26 @@
             <label>Transporte:</label>
             <div class="radio" *ngFor="let transporte of transportes">
               <label>
-                <input type="radio" name="transporte" [ngModel]="{checked: transporte._id == transporteSelecionado._id }" (change)="onTransporteChange(transporte)"> {{ transporte.nome }}
+                <input type="radio" [ngModel]="{checked: transporte._id == transporteSelecionado._id }" (change)="onTransporteChange(transporte)"> {{ transporte.nome }}
               </label>
             </div>
           </div>
         </div>
       </div>
-      
+
       <div class="form-group">
         <label for="data_pagamento">Data Pagamento:</label>
-        <input ngControl="data_pagamento" type="date" class="form-control" [(ngModel)]="ordem.data_pagamento">
+        <input type="date" class="form-control" [(ngModel)]="ordem.data_pagamento" ngControl="data_pagamento">
       </div>
 
       <div class="form-group">
         <label for="forma_pagamento">Forma Pagamento:</label>
-        <input ngControl="forma_pagamento" type="text" class="form-control" [(ngModel)]="ordem.forma_pagamento">
+        <input type="text" class="form-control" [(ngModel)]="ordem.forma_pagamento" ngControl="forma_pagamento">
       </div>
 
       <div class="form-group">
         <label for="numero_nfe">Nº NF-e:</label>
-        <input ngControl="numero_nfe" type="text" class="form-control" [(ngModel)]="ordem.numero_nfe">
+        <input type="text" class="form-control" [(ngModel)]="ordem.numero_nfe" ngControl="numero_nfe">
       </div>
 
       <div style="text-align:right">
@@ -311,14 +311,6 @@
 
     </div>
 
-  </div>
-  
-  <input type="hidden" class="form-control" [(ngModel)]="numero" ngControl="numero">
-
-  <div class="row">
-    <div class="alert alert-success" role="alert" *ngIf="successMessage">
-      {{ successMessage }}
-    </div>
   </div>
 
 </form>

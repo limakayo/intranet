@@ -19,17 +19,17 @@
 
 	<form #ordemForm="ngForm" (ngSubmit)="add(ordemForm.value)">
 
-		<input type="hidden" class="form-control" [(ngModel)]="numero" ngControl="numero">
+		<input type="hidden" class="form-control" [(ngModel)]="numero">
 
 		<div class="form-group col-md-4">
 			<label for="cliente">Cliente</label><br>
 			<p-autoComplete [(ngModel)]="cliente" [suggestions]="filteredClientes" (completeMethod)="search($event)" field="nome" [size]="30"
-		    placeholder="Clientes" [minLength]="1" ngControl="cliente" inputStyleClass="form-control"></p-autoComplete>
+		    placeholder="Clientes" [minLength]="1" inputStyleClass="form-control"></p-autoComplete>
 		</div>
 
 		<div class="form-group col-md-2">
 			<label for="equipamento">Equipamento</label>
-			<select [ngModel]="equipamento" ngControl="equipamento" class="form-control" id="equipamento">
+			<select [ngModel]="equipamento" class="form-control" id="equipamento">
 				<option *ngFor="let equipamento of equipamentos" [ngValue]="equipamento">
 					{{ equipamento.nome }}
 				</option>
@@ -38,32 +38,32 @@
 
 		<div class="form-group col-md-2">
 			<label for="marca">Marca</label>
-			<input [ngModel]="marca" ngControl="marca" class="form-control" id="marca">
+			<input [ngModel]="marca" class="form-control" id="marca">
 		</div>
 
 		<div class="form-group col-md-2">
 			<label for="modelo">Modelo</label>
-			<input [ngModel]="modelo" ngControl="modelo" class="form-control" id="modelo">
+			<input [ngModel]="modelo" class="form-control" id="modelo">
 		</div>
 
 		<div class="form-group col-md-2">
 			<label for="serie">Série</label>
-			<input [ngModel]="serie" ngControl="serie" class="form-control" id="serie" maxlength="5">
+			<input [ngModel]="serie" class="form-control" id="serie" maxlength="5">
 		</div>
 
 		<div class="form-group col-md-2">
 			<label for="origem">Origem</label>
-			<input [ngModel]="origem" ngControl="origem" class="form-control" id="origem">
+			<input [ngModel]="origem" class="form-control" id="origem">
 		</div>
 
 		<div class="form-group col-md-4">
 			<label for="defeito">Defeito</label>
-			<input [ngModel]="defeito" ngControl="defeito" class="form-control" id="defeito">
+			<input [ngModel]="defeito" class="form-control" id="defeito">
 		</div>
 
 		<div class="form-group col-md-4">
 			<label for="observacoes">Observações</label>
-			<input [ngModel]="observacoes" ngControl="observacoes" class="form-control" id="observacoes">
+			<input [ngModel]="observacoes" class="form-control" id="observacoes">
 		</div>
 
 		<div class="form-group col-md-4">

@@ -2,10 +2,7 @@
     <label for="avaliada">Orçamentos ({{ avaliadas.length }})</label>
     <select [(ngModel)]="ordem" class="form-control" id="avaliada" (ngModelChange)="onOrdemChange(ordem)">
       <option *ngFor="let avaliada of avaliadas" [ngValue]="avaliada">
-        {{ avaliada.numero }} | 
-        {{ stringAsDate(avaliada.createdAt) | date:'dd/MM/yyyy HH:mm:ss' }} | 
-        {{ avaliada.modelo }} |
-        {{ avaliada.cliente.nome }}
+        {{ showOrdem(avaliada) }}
       </option>
     </select>
   </div>
@@ -13,10 +10,7 @@
     <label for="aberta">Abertas ({{ abertas.length }})</label>
     <select [(ngModel)]="ordem" class="form-control" id="aberta" (ngModelChange)="onOrdemChange(ordem)">
       <option *ngFor="let aberta of abertas" [ngValue]="aberta">
-        {{ aberta.numero }} | 
-        {{ stringAsDate(aberta.createdAt) | date:'dd/MM/yyyy HH:mm:ss' }} | 
-        {{ aberta.modelo }} |
-        {{ aberta.cliente.nome }}
+        {{ showOrdem(aberta) }}
       </option>
     </select>
   </div>
@@ -24,10 +18,7 @@
     <label for="aprovada">Aprovadas ({{ aprovadas.length }})</label>
     <select [(ngModel)]="ordem" class="form-control" id="aprovada" (ngModelChange)="onOrdemChange(ordem)">
       <option *ngFor="let aprovada of aprovadas" [ngValue]="aprovada">
-        {{ aprovada.numero }} | 
-        {{ stringAsDate(aprovada.createdAt) | date:'dd/MM/yyyy HH:mm:ss' }} | 
-        {{ aprovada.modelo }} |
-        {{ aprovada.cliente.nome }}
+        {{ showOrdem(aprovada) }}
       </option>
     </select>
   </div>
@@ -35,10 +26,7 @@
     <label for="reprovada">Reprovadas ({{ reprovadas.length }})</label>
     <select [(ngModel)]="ordem" class="form-control" id="reprovada" (ngModelChange)="onOrdemChange(ordem)">
       <option *ngFor="let reprovada of reprovadas" [ngValue]="reprovada">
-        {{ reprovada.numero }} | 
-        {{ stringAsDate(reprovada.createdAt) | date:'dd/MM/yyyy HH:mm:ss' }} | 
-        {{ reprovada.modelo }} |
-        {{ reprovada.cliente.nome }}
+        {{ showOrdem(reprovada) }}
       </option>
     </select>
   </div>
@@ -46,10 +34,7 @@
     <label for="garantia">Garantias ({{ garantias.length }})</label>
     <select [(ngModel)]="ordem" class="form-control" id="garantia" (ngModelChange)="onOrdemChange(ordem)">
       <option *ngFor="let garantia of garantias" [ngValue]="garantia">
-        {{ garantia.numero }} | 
-        {{ stringAsDate(garantia.createdAt) | date:'dd/MM/yyyy HH:mm:ss' }} | 
-        {{ garantia.modelo }} |
-        {{ garantia.cliente.nome }}
+        {{ showOrdem(garantia) }}
       </option>
     </select>
   </div>

@@ -17,14 +17,14 @@ import { FORM_DIRECTIVES } from '@angular/common';
 	moduleId: module.id,
 	selector: 'controle',
 	templateUrl: 'controle.component.html',
-	providers: [ 
-		OrdemService, 
-		AcessorioService, 
+	providers: [
+		OrdemService,
+		AcessorioService,
 		AtendimentoService,
 		TransporteService,
 		AuthService
 	],
-	directives: [  Currency, FORM_DIRECTIVES, Growl, MenuAdminComponent ]
+	directives: [  Currency, Growl, FORM_DIRECTIVES, MenuAdminComponent ]
 })
 export class ControleComponent implements OnInit, OnDestroy {
 
@@ -124,7 +124,7 @@ export class ControleComponent implements OnInit, OnDestroy {
 					this.errorMessage = null;
 					this.atendimentoSelecionado = data.ordem.atendimento;
 					this.transporteSelecionado = data.ordem.transporte;
-					if (data.ordem.aprovacao) 
+					if (data.ordem.aprovacao)
 						this.aprovacaoSelecionada = this.aprovacoes.filter(a => a.id == data.ordem.aprovacao)[0];
 					if (data.ordem.data_hora_pronto) {
 						this.pronto = true;
@@ -155,7 +155,8 @@ export class ControleComponent implements OnInit, OnDestroy {
 		return false;
 	}
 
-	updateOrdem(form: any) {
+	updateOrdem(form:any) {
+
 		// Aberta
 		this.andamento = 'Aberta';
 
@@ -181,7 +182,7 @@ export class ControleComponent implements OnInit, OnDestroy {
 				form.data_hora_orcamento = null;
 				form.data_hora_aprovacao = null;
 				this.aprovacaoSelecionada = this.aprovacoes[2];
-				
+
 				if (this.isAvaliada(form)) {
 					this.andamento = 'Avaliada';
 				} else {
@@ -234,7 +235,8 @@ export class ControleComponent implements OnInit, OnDestroy {
 		form.aprovacao = this.aprovacaoSelecionada.id;
 		form.andamento = this.andamento;
 		form.tecnico = this.user.email;
-		console.log(this.user);
+
+		console.log(form);
 
 		this.ordemService.editOrdem(form).subscribe(
 			ordem => {
@@ -285,7 +287,6 @@ export class ControleComponent implements OnInit, OnDestroy {
 		} else {
 			this.acessoriosSelecionados = this.acessoriosSelecionados.filter(a => a._id !== acessorio._id)
 		}
-		console.log(this.acessoriosSelecionados);
     }
 
     onAtendimentoChange(atendimento: any) {
@@ -346,10 +347,6 @@ export class ControleComponent implements OnInit, OnDestroy {
 		this.transporteService.getTransportes().subscribe(
 			transportes => this.transportes = transportes
 		);
-	}
-
-    stringAsDate(dateStr: string) {
-		return new Date(dateStr);
 	}
 
 }
