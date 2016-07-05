@@ -9,7 +9,7 @@ import { Observable }		from 'rxjs/Observable';
 
 @Injectable()
 export class ClienteService {
-	private clientesUrl = 'http://localhost:8000/api/clientes';
+	private clientesUrl = 'http://192.168.0.109:8000/api/clientes';
 
 	constructor(private http: Http, private authHttp: AuthHttp) {}
 

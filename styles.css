@@ -4,6 +4,13 @@
   font-weight: bold;
   color: #3b5998;
 }
+
+.controle-garantia{
+  display: block;
+  font-size: 14px;
+  margin-top:8px;
+}
+
 .input-list {
   width:95%;
   float: left;

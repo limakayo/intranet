@@ -25,6 +25,8 @@ var AppComponent = (function () {
         this.auth.getUser().subscribe(function (data) {
             if (data.app_metadata.roles[0] == "admin")
                 _this.auth.userIsAdmin = true;
+            else if (data.app_metadata.roles[0] == "tecnico")
+                _this.auth.userIsTecnico = true;
         });
     };
     AppComponent = __decorate([
@@ -32,8 +34,7 @@ var AppComponent = (function () {
             selector: 'my-app',
             moduleId: module.id,
             templateUrl: 'app.component.html',
-            directives: [router_1.ROUTER_DIRECTIVES],
-            providers: [auth_service_1.AuthService]
+            directives: [router_1.ROUTER_DIRECTIVES]
         }), 
         __metadata('design:paramtypes', [auth_service_1.AuthService])
     ], AppComponent);

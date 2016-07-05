@@ -7,7 +7,7 @@ import { Observable }		from 'rxjs/Observable';
 
 @Injectable()
 export class AcessorioService {
-  private url = 'http://localhost:8000/api/acessorios';
+  private url = 'http://192.168.0.109:8000/api/acessorios';
 
   constructor(private authHttp: AuthHttp) { }
 

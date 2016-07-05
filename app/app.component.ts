@@ -9,8 +9,7 @@ import { tokenNotExpired } from 'angular2-jwt';
     selector: 'my-app',
     moduleId: module.id,
     templateUrl: 'app.component.html',
-    directives: [ ROUTER_DIRECTIVES ],
-    providers: [ AuthService ]
+    directives: [ ROUTER_DIRECTIVES ]
 })
 
 export class AppComponent implements OnInit {
@@ -24,8 +23,10 @@ export class AppComponent implements OnInit {
     this.auth.getUser().subscribe(
       data => {
         if (data.app_metadata.roles[0] == "admin")
-            this.auth.userIsAdmin = true
-        }
+          this.auth.userIsAdmin = true;
+        else if (data.app_metadata.roles[0] == "tecnico")
+          this.auth.userIsTecnico = true;
+       }
     );
   }
 }

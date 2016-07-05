@@ -13,6 +13,8 @@ import { Currency } from '../shared/currency';
 
 import { FORM_DIRECTIVES } from '@angular/common';
 
+import { tokenNotExpired } from 'angular2-jwt';
+
 @Component({
 	moduleId: module.id,
 	selector: 'controle',
@@ -21,8 +23,7 @@ import { FORM_DIRECTIVES } from '@angular/common';
 		OrdemService,
 		AcessorioService,
 		AtendimentoService,
-		TransporteService,
-		AuthService
+		TransporteService
 	],
 	directives: [  Currency, Growl, FORM_DIRECTIVES, MenuAdminComponent ]
 })
@@ -82,9 +83,10 @@ export class ControleComponent implements OnInit, OnDestroy {
 		this.getAcessorios();
 		this.getAtendimentos();
 		this.getTransportes();
-		this.getUser();
 
 		this.updateMenu();
+
+		this.getUser();
 
 		this.sub = this.route.params.subscribe(params => {
 			let id = params['id'];
@@ -92,23 +94,22 @@ export class ControleComponent implements OnInit, OnDestroy {
 				this.getOrdem(id);
 			}
 		});
-
 	}
 
 	ngOnDestroy() {
 		this.sub.unsubscribe();
 	}
 
+	getUser() {
+		this.auth.getUser().subscribe(
+			user => this.user = user
+		)
+	}
+
 	showInfo() {
         this.msgs = [];
         this.msgs.push({ severity: 'info', summary: 'Ordem de serviço', detail: 'Atualizada com sucesso' });
     }
-
-	getUser() {
-		this.auth.getUser().subscribe(
-			user => this.user = user
-		);
-	}
 
 	goToControle(numero: string) {
 		this.router.navigate(['/ordens/controle', numero ]);
@@ -159,9 +160,20 @@ export class ControleComponent implements OnInit, OnDestroy {
 
 		// Aberta
 		this.andamento = 'Aberta';
+		form.tecnico = null;
+
+		// Garantia
+		if (this.atendimentoSelecionado.nome == 'Garantia') {
+			this.andamento = 'Garantia';
+		}
 
 		// Avaliacao Técnica
 		if (this.isAvaliada(form)) {
+			if (!this.ordem.tecnico && this.auth.isTecnico()) {
+				form.tecnico = this.user.nickname;
+			} else {
+				form.tecnico = this.ordem.tecnico;
+			}
 			this.andamento = 'Avaliada';
 		}
 
@@ -187,6 +199,7 @@ export class ControleComponent implements OnInit, OnDestroy {
 					this.andamento = 'Avaliada';
 				} else {
 					this.andamento = 'Aberta';
+					form.tecnico = null;
 				}
 			}
 		} else {
@@ -201,10 +214,6 @@ export class ControleComponent implements OnInit, OnDestroy {
 			form.data_hora_pronto = null;
 		} else if (!this.ordem.data_hora_pronto) {
 			form.data_hora_pronto = new Date;
-		}
-
-		if (this.atendimentoSelecionado.nome == 'Garantia') {
-			this.andamento = 'Garantia';
 		}
 
 		// Fechado
@@ -234,7 +243,6 @@ export class ControleComponent implements OnInit, OnDestroy {
 		form.transporte = this.transporteSelecionado;
 		form.aprovacao = this.aprovacaoSelecionada.id;
 		form.andamento = this.andamento;
-		form.tecnico = this.user.email;
 
 		console.log(form);
 

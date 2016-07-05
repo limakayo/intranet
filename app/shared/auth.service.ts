@@ -5,6 +5,7 @@ import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { AuthHttp } from 'angular2-jwt';
 
 import { Observable }		from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
 
 import { tokenNotExpired } from 'angular2-jwt';
 
@@ -12,14 +13,15 @@ declare var Auth0Lock: any;
 
 @Injectable()
 export class AuthService {
-  private usersUrl = 'http://localhost:8000/api/users';
+  private usersUrl = 'http://192.168.0.109:8000/api/users';
 
   lock = new Auth0Lock('MxDo1msOA6oBtY7IYmQTMHnQ6YsU3x2a', 'limakayo.auth0.com');
 
   user: Object;
   zoneImpl: NgZone;
   userRole: string;
-  userIsAdmin: boolean;
+  userIsAdmin: boolean = false;
+  userIsTecnico: boolean = false;
 
   constructor(zone: NgZone, private router: Router, private authHttp: AuthHttp) {
     this.zoneImpl = zone;
@@ -43,16 +45,17 @@ export class AuthService {
   }
 
   public isAdmin() {
-    if (this.userIsAdmin)
-      return true;
+    return this.userIsAdmin;
+  }
 
-    return false;
+  public isTecnico() {
+    return this.userIsTecnico;
   }
 
   public login() {
     this.lock.show({
       authParams: {
-        scope: 'openid app_metadata email name'
+        scope: 'openid app_metadata email name nickname'
       }
     }, (err: string, profile: Object, token: string) => {
       if (err) {
@@ -67,10 +70,8 @@ export class AuthService {
 
       this.addUser(this.user).subscribe(
         data => {
-          if (data == 'admin')
+          if (data.localeCompare('admin') == 0)
             this.userIsAdmin = true
-          else
-            this.userIsAdmin = false
         }
       );
 
@@ -82,6 +83,8 @@ export class AuthService {
     localStorage.removeItem('profile');
     localStorage.removeItem('id_token');
     this.zoneImpl.run(() => this.user = null);
+    this.userIsAdmin = false;
+    this.userIsTecnico = false;
     this.router.navigate(['']);
   }
 

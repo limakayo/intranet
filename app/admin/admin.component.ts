@@ -14,15 +14,7 @@ import { appInjector } from '../shared/injector';
     <h3>User details:</h3>
     <label>Role:</label> <span *ngIf="user">{{ user.app_metadata.roles[0] }}</span>
   `,
-  providers: [ AuthService ]
 })
-
-/*@CanActivate(() => {
-   let injector: Injector = appInjector();
-   let auth: AuthService = injector.get(AuthService);
-
-   return auth.isAdmin();
-})*/
 
 export class AdminComponent implements OnInit {
   constructor(private auth:AuthService){}
