@@ -12,7 +12,7 @@ const MASK_VALUE_ACCESSOR = new Provider(
 
 @Component({
   selector: 'my-mask',
-  template: '<input class="form-control" [(ngModel)]="value" (keydown)="onKeyDown($event)" (keyup)="onKeyUp($event)">',
+  template: '<input class="form-control" [(ngModel)]="value" name="value" (keydown)="onKeyDown($event)" (keyup)="onKeyUp($event)">',
   providers: [ MASK_VALUE_ACCESSOR ],
   directives: [ CORE_DIRECTIVES ]
 })

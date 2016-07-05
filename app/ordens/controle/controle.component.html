@@ -5,7 +5,7 @@
 <div class="row">
   <div class="col-md-1">
     <label for="ordem">NºOS:</label>
-    <input #input [(ngModel)]="numero" class="form-control" maxlength="5" id="ordem" (keyup.enter)='goToControle(input.value)'>
+    <input #input [(ngModel)]="numero" name="numero" class="form-control" maxlength="5" id="ordem" (keyup.enter)='goToControle(input.value)'>
   </div>
 
   <menu-admin
@@ -25,12 +25,12 @@
 
 {{ errorMessage }}
 
-<form #ordemForm="ngForm" (ngSubmit)="updateOrdem(ordemForm.value)">
+<form #ordemForm="ngForm" (ngSubmit)="onSubmit(ordemForm.value)">
 
   <div class="row" *ngIf="ordem">
 
-    <input type="hidden" [(ngModel)]="ordem._id" ngControl="_id">
-    <input type="hidden" [(ngModel)]="numero" ngControl="numero">
+    <input type="hidden" [(ngModel)]="ordem._id" name="_id">
+    <input type="hidden" [(ngModel)]="numero" name="numero">
 
     <div class="col-md-12">
       <h3 *ngIf="ordem" class="controle-os">OS: {{ ordem.numero }}</h3>
@@ -61,7 +61,7 @@
 
       <div class="form-group">
         <label for="observacoes">Observações:</label>
-        <input type="text" class="form-control" id="observacoes" [(ngModel)]="ordem.observacoes" ngControl="observacoes">
+        <input type="text" class="form-control" id="observacoes" [(ngModel)]="ordem.observacoes" name="observacoes">
       </div>
 
       <div class="form-group">
@@ -69,7 +69,7 @@
         <div class="checkboxgroup">
           <div *ngFor="let acessorio of acessorios">
             <label>
-              <input type="checkbox" [ngModel]="acessorio.selected" (ngModelChange)="onAcessorioChange(acessorio)">
+              <input type="checkbox" [ngModel]="acessorio.selected" [ngModelOptions]="{standalone: true}" (ngModelChange)="onAcessorioChange(acessorio)">
               {{ acessorio.nome }}
             </label>
           </div>
@@ -123,13 +123,13 @@
         <tr>
           <th>Pronto</th>
           <td>{{ ordem.data_hora_pronto | date:'dd/MM/yyyy HH:mm:ss' }}</td>
-          <td><input type="checkbox" [(ngModel)]="pronto" (ngModelChange)="onProntoChange(pronto)"></td>
+          <td><input type="checkbox" name="pronto" [ngModel]="pronto" (ngModelChange)="onProntoChange(pronto)"></td>
         </tr>
       </table>
 
       <div class="checkbox" *ngIf="!ordem.data_hora_pronto">
         <label>
-          <input type="checkbox" [(ngModel)]="pronto" (ngModelChange)="onProntoChange(pronto)"> Pronto
+          <input type="checkbox" name="pronto" [ngModel]="pronto" (ngModelChange)="onProntoChange(pronto)"> Pronto
         </label>
       </div>
 
@@ -139,13 +139,13 @@
           <tr>
             <th>Fechado</th>
             <td>{{ ordem.data_hora_fechado | date:'dd/MM/yyyy HH:mm:ss' }}</td>
-            <td><input type="checkbox" [(ngModel)]="fechado" (ngModelChange)="onFechadoChange(fechado)"></td>
+            <td><input type="checkbox" name="fechado" [ngModel]="fechado" (ngModelChange)="onFechadoChange(fechado)"></td>
           </tr>
         </table>
 
         <div class="checkbox" *ngIf="!ordem.data_hora_fechado">
           <label>
-            <input type="checkbox" [(ngModel)]="fechado" (ngModelChange)="onFechadoChange(fechado)"> Fechado
+            <input type="checkbox" name="fechado" [ngModel]="fechado" (ngModelChange)="onFechadoChange(fechado)"> Fechado
           </label>
         </div>
 
@@ -156,13 +156,13 @@
           <tr>
           <th>Entregue</th>
           <td>{{ ordem.data_hora_entregue | date:'dd/MM/yyyy HH:mm:ss' }}</td>
-          <td><input type="checkbox" [(ngModel)]="entregue" (ngModelChange)="onEntregueChange(entregue)"></td>
+          <td><input type="checkbox" name="entregue" [ngModel]="entregue" (ngModelChange)="onEntregueChange(entregue)"></td>
           </tr>
         </table>
 
         <div class="checkbox" *ngIf="!ordem.data_hora_entregue">
           <label>
-            <input type="checkbox" [(ngModel)]="entregue" (ngModelChange)="onEntregueChange(entregue)"> Entregue
+            <input type="checkbox" name="entregue" [ngModel]="entregue" (ngModelChange)="onEntregueChange(entregue)"> Entregue
           </label>
         </div>
       </div>
@@ -182,68 +182,69 @@
       
       <div class="form-group">
         <label for="defeito_tecnico">Defeito Técnico:</label>
-        <textarea class="form-control" id="defeito_tecnico" [(ngModel)]="ordem.defeito_tecnico" ngControl="defeito_tecnico" [readOnly]="auth.isAdmin()"></textarea>
+        <textarea class="form-control" id="defeito_tecnico" name="defeito_tecnico" [(ngModel)]="ordem.defeito_tecnico" [readOnly]="auth.isAdmin()"></textarea>
       </div>
 
       <div class="form-group">
         <label for="solucao_tecnica">Solução Técnica:</label>
-        <textarea class="form-control" id="solucao_tecnica" [(ngModel)]="ordem.solucao_tecnica" ngControl="solucao_tecnica" [readOnly]="auth.isAdmin()"></textarea>
+        <textarea class="form-control" id="solucao_tecnica" name="solucao_tecnica" [(ngModel)]="ordem.solucao_tecnica" [readOnly]="auth.isAdmin()"></textarea>
       </div>
 
       <div class="form-group" *ngIf="auth.isAdmin()">
         <label for="defeito">Defeito:</label>
-        <textarea class="form-control" id="defeito" [(ngModel)]="ordem.defeito" ngControl="defeito"></textarea>
+        <textarea class="form-control" id="defeito" name="defeito" [(ngModel)]="ordem.defeito"></textarea>
       </div>
 
       <div class="form-group" *ngIf="!auth.isAdmin() && ordem.tecnico">
         <label for="tecnico">Técnico:</label>
-        <input type="text" class="form-control" id="tecnico" [(ngModel)]="ordem.tecnico" readonly="readonly" />
+        <input class="form-control" id="tecnico" name="tecnico" [(ngModel)]="ordem.tecnico" readonly="readonly" />
       </div>
 
       <div class="row" *ngIf="auth.isAdmin()">
         <div class="col-md-6">
           <div class="form-group">
             <label for="solucao">Solução:</label>
-            <textarea class="form-control" id="solucao" [(ngModel)]="ordem.solucao" rows="4" ngControl="solucao"></textarea>
+            <textarea class="form-control" id="solucao" name="solucao" [(ngModel)]="ordem.solucao" rows="4"></textarea>
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
             <label for="pecas">Peças:</label>
-            <textarea class="form-control" id="pecas" [(ngModel)]="ordem.pecas" rows="4" ngControl="pecas"></textarea>
+            <textarea class="form-control" id="pecas" name="pecas" [(ngModel)]="ordem.pecas" rows="4"></textarea>
           </div>
         </div>
       </div>
 
       <div class="row" *ngIf="auth.isAdmin()">
+      <!--
         <div class="col-md-6">
           <div class="form-group">
             <label for="valor_mo">Valor M.O:</label>
-            <my-mask ngControl="valor_mo" id="valor_mo" [(ngModel)]="ordem.valor_mo"></my-mask>
+            <my-mask id="valor_mo" [(ngModel)]="ordem.valor_mo"></my-mask>
           </div>
           <div class="form-group">
             <label for="valor_pecas">Valor Peças:</label>
-            <my-mask ngControl="valor_pecas" id="valor_pecas" [(ngModel)]="ordem.valor_pecas"></my-mask>
+            <my-mask id="valor_pecas" [(ngModel)]="ordem.valor_pecas"></my-mask>
           </div>
           <div class="form-group">
             <label for="valor_total">Valor Total:</label>
-            <my-mask ngControl="valor_total" id="valor_total" [(ngModel)]="ordem.valor_total"></my-mask>
+            <my-mask id="valor_total" [(ngModel)]="ordem.valor_total"></my-mask>
           </div>
-        </div>
+        </div>-->
         <div class="col-md-6">
           <div class="form-group">
             <label for="prazo">Prazo:</label>
-            <input ngControl="prazo" type="text" class="form-control" id="prazo" [(ngModel)]="ordem.prazo"/>
+            <input name="prazo" class="form-control" id="prazo" [(ngModel)]="ordem.prazo"/>
           </div>
 
           <div class="form-group">
             <label for="condicao">Condição:</label>
-            <input ngControl="condicao" type="text" class="form-control" id="condicao" [(ngModel)]="ordem.condicao"/>
+            <input name="condicao" class="form-control" id="condicao" [(ngModel)]="ordem.condicao"/>
           </div>
 
           <div class="form-group" *ngIf="ordem.tecnico">
             <label for="tecnico">Técnico:</label>
-            <input type="text" class="form-control" id="tecnico" [(ngModel)]="ordem.tecnico" readonly="readonly" />
+            <input name="tecnico" class="form-control" id="tecnico" [(ngModel)]="ordem.tecnico" readonly="readonly" />
           </div>
         </div>
       </div>
@@ -276,10 +277,10 @@
 
       <div class="form-group">
         <label for="origem">Origem:</label>
-        <input type="text" class="form-control" id="origem" [(ngModel)]="ordem.origem" ngControl="origem">
+        <input name="origem" class="form-control" id="origem" [(ngModel)]="ordem.origem">
       </div>
 
-      <div class="row">
+      <!--<div class="row">
         <div class="col-md-6">
           <div class="form-group">
             <label>Atendimento:</label>
@@ -301,22 +302,22 @@
             </div>
           </div>
         </div>
-      </div>
+      </div>-->
 
       <div *ngIf="auth.isAdmin()">
         <div class="form-group">
           <label for="data_pagamento">Data Pagamento:</label>
-          <input type="date" class="form-control" [(ngModel)]="ordem.data_pagamento" ngControl="data_pagamento">
+          <input type="date" name="data_pagamento" class="form-control" [(ngModel)]="ordem.data_pagamento">
         </div>
 
         <div class="form-group">
           <label for="forma_pagamento">Forma Pagamento:</label>
-          <input type="text" class="form-control" [(ngModel)]="ordem.forma_pagamento" ngControl="forma_pagamento">
+          <input name="forma_pagamento" class="form-control" [(ngModel)]="ordem.forma_pagamento">
         </div>
 
         <div class="form-group">
           <label for="numero_nfe">Nº NF-e:</label>
-          <input type="text" class="form-control" [(ngModel)]="ordem.numero_nfe" ngControl="numero_nfe">
+          <input name="numero_nfe" class="form-control" [(ngModel)]="ordem.numero_nfe">
         </div>
       </div>
 
@@ -326,6 +327,10 @@
 
     </div>
 
+  </div>
+
+  <div style="text-align:right">
+    <button type="submit" class="btn btn-primary">Salvar</button>
   </div>
 
 </form>

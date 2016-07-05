@@ -12,6 +12,8 @@ import { Ordem } from '../shared/ordem.model';
 
 import { AutoComplete } from 'primeng/primeng';
 
+import { NgForm }    from '@angular/common';
+
 @Component({
 	moduleId: module.id,
 	selector: 'entrada',
@@ -133,6 +135,7 @@ export class EntradaComponent implements OnInit {
 				form.andamento = 'Garantia';
 			}
 
+			
 		    this.ordemService.addOrdem(form).subscribe(
 		      data => {
 						console.log(data)
@@ -146,10 +149,11 @@ export class EntradaComponent implements OnInit {
 		    );
 
 		}
+		
 	}
 
 	goToControle(ordem: Ordem) {
-		this.router.navigate(['/controle', { id: ordem.numero }]);
+		this.router.navigate(['ordens/controle', { id: ordem.numero }]);
 	}
 
 

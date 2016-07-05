@@ -1,5 +1,5 @@
 import { bootstrap }    from '@angular/platform-browser-dynamic';
-//import { disableDeprecatedForms, provideForms } from '@angular/forms';
+import { disableDeprecatedForms, provideForms } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 
@@ -13,6 +13,8 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
 bootstrap(AppComponent, [
+	disableDeprecatedForms(),
+	provideForms(),
 	APP_ROUTER_PROVIDERS,
 	HTTP_PROVIDERS,
 	AUTH_PROVIDERS,

@@ -11,7 +11,7 @@ import { MenuAdminComponent } from './menu-admin.component';
 
 import { Currency } from '../shared/currency';
 
-import { FORM_DIRECTIVES } from '@angular/common';
+import { NgForm } from '@angular/common';
 
 import { tokenNotExpired } from 'angular2-jwt';
 
@@ -25,7 +25,7 @@ import { tokenNotExpired } from 'angular2-jwt';
 		AtendimentoService,
 		TransporteService
 	],
-	directives: [  Currency, Growl, FORM_DIRECTIVES, MenuAdminComponent ]
+	directives: [  Currency, Growl, MenuAdminComponent ]
 })
 export class ControleComponent implements OnInit, OnDestroy {
 
@@ -154,6 +154,10 @@ export class ControleComponent implements OnInit, OnDestroy {
 			return true;
 		}
 		return false;
+	}
+
+	onSubmit(form:any) {
+		console.log(form);
 	}
 
 	updateOrdem(form:any) {
