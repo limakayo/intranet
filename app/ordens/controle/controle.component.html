@@ -5,7 +5,7 @@
 <div class="row">
   <div class="col-md-1">
     <label for="ordem">NºOS:</label>
-    <input #input [(ngModel)]="numero" name="numero" class="form-control" maxlength="5" id="ordem" (keyup.enter)='goToControle(input.value)'>
+    <input #input class="form-control" maxlength="5" id="ordem" (keyup.enter)='goToControle(input.value)'>
   </div>
 
   <menu-admin
@@ -25,12 +25,12 @@
 
 {{ errorMessage }}
 
-<form #ordemForm="ngForm" (ngSubmit)="onSubmit(ordemForm.value)">
+<form #ordemForm="ngForm" (ngSubmit)="updateOrdem(ordemForm.value)">
 
   <div class="row" *ngIf="ordem">
 
     <input type="hidden" [(ngModel)]="ordem._id" name="_id">
-    <input type="hidden" [(ngModel)]="numero" name="numero">
+    <input type="hidden" [(ngModel)]="ordem.numero" name="numero">
 
     <div class="col-md-12">
       <h3 *ngIf="ordem" class="controle-os">OS: {{ ordem.numero }}</h3>
@@ -69,7 +69,7 @@
         <div class="checkboxgroup">
           <div *ngFor="let acessorio of acessorios">
             <label>
-              <input type="checkbox" [ngModel]="acessorio.selected" [ngModelOptions]="{standalone: true}" (ngModelChange)="onAcessorioChange(acessorio)">
+              <input type="checkbox" [(ngModel)]="acessorio.selected" [ngModelOptions]="{standalone: true}" (ngModelChange)="onAcessorioChange(acessorio)">
               {{ acessorio.nome }}
             </label>
           </div>
@@ -123,13 +123,13 @@
         <tr>
           <th>Pronto</th>
           <td>{{ ordem.data_hora_pronto | date:'dd/MM/yyyy HH:mm:ss' }}</td>
-          <td><input type="checkbox" name="pronto" [ngModel]="pronto" (ngModelChange)="onProntoChange(pronto)"></td>
+          <td><input type="checkbox" name="pronto" [ngModel]="ordem.pronto" (change)="onProntoChange($event.target.checked)"></td>
         </tr>
       </table>
 
       <div class="checkbox" *ngIf="!ordem.data_hora_pronto">
         <label>
-          <input type="checkbox" name="pronto" [ngModel]="pronto" (ngModelChange)="onProntoChange(pronto)"> Pronto
+          <input type="checkbox" name="pronto" [ngModel]="ordem.pronto" (change)="onProntoChange($event.target.checked)"> Pronto
         </label>
       </div>
 
@@ -139,13 +139,13 @@
           <tr>
             <th>Fechado</th>
             <td>{{ ordem.data_hora_fechado | date:'dd/MM/yyyy HH:mm:ss' }}</td>
-            <td><input type="checkbox" name="fechado" [ngModel]="fechado" (ngModelChange)="onFechadoChange(fechado)"></td>
+            <td><input type="checkbox" name="fechado" [ngModel]="ordem.fechado" (change)="onFechadoChange($event.target.checked)"></td>
           </tr>
         </table>
 
         <div class="checkbox" *ngIf="!ordem.data_hora_fechado">
           <label>
-            <input type="checkbox" name="fechado" [ngModel]="fechado" (ngModelChange)="onFechadoChange(fechado)"> Fechado
+            <input type="checkbox" name="fechado" [ngModel]="ordem.fechado" (change)="onFechadoChange($event.target.checked)"> Fechado
           </label>
         </div>
 
@@ -156,13 +156,13 @@
           <tr>
           <th>Entregue</th>
           <td>{{ ordem.data_hora_entregue | date:'dd/MM/yyyy HH:mm:ss' }}</td>
-          <td><input type="checkbox" name="entregue" [ngModel]="entregue" (ngModelChange)="onEntregueChange(entregue)"></td>
+          <td><input type="checkbox" name="entregue" [ngModel]="ordem.entregue" (change)="onEntregueChange($event.target.checked)"></td>
           </tr>
         </table>
 
         <div class="checkbox" *ngIf="!ordem.data_hora_entregue">
           <label>
-            <input type="checkbox" name="entregue" [ngModel]="entregue" (ngModelChange)="onEntregueChange(entregue)"> Entregue
+            <input type="checkbox" name="entregue" [ngModel]="ordem.entregue" (change)="onEntregueChange($event.target.checked)"> Entregue
           </label>
         </div>
       </div>
@@ -216,21 +216,21 @@
       </div>
 
       <div class="row" *ngIf="auth.isAdmin()">
-      <!--
+      
         <div class="col-md-6">
           <div class="form-group">
             <label for="valor_mo">Valor M.O:</label>
-            <my-mask id="valor_mo" [(ngModel)]="ordem.valor_mo"></my-mask>
+            <my-mask id="valor_mo" [(ngModel)]="ordem.valor_mo" name="valor_mo" [readonly]="isGarantia()"></my-mask>
           </div>
           <div class="form-group">
             <label for="valor_pecas">Valor Peças:</label>
-            <my-mask id="valor_pecas" [(ngModel)]="ordem.valor_pecas"></my-mask>
+            <my-mask id="valor_pecas" [(ngModel)]="ordem.valor_pecas" name="valor_pecas" [readonly]="isGarantia()"></my-mask>
           </div>
           <div class="form-group">
             <label for="valor_total">Valor Total:</label>
-            <my-mask id="valor_total" [(ngModel)]="ordem.valor_total"></my-mask>
+            <my-mask id="valor_total" [(ngModel)]="ordem.valor_total" name="valor_total" readonly="readonly"></my-mask>
           </div>
-        </div>-->
+        </div>
         <div class="col-md-6">
           <div class="form-group">
             <label for="prazo">Prazo:</label>
@@ -280,13 +280,13 @@
         <input name="origem" class="form-control" id="origem" [(ngModel)]="ordem.origem">
       </div>
 
-      <!--<div class="row">
+      <div class="row">
         <div class="col-md-6">
           <div class="form-group">
             <label>Atendimento:</label>
             <div class="radio" *ngFor="let atendimento of atendimentos">
               <label>
-                <input type="radio" name="atendimento" [ngModel]="{checked: atendimento._id == atendimentoSelecionado._id }" (change)="onAtendimentoChange(atendimento)"> {{ atendimento.nome }}
+                <input type="radio" name="atendimento" (change)="onAtendimentoChange(atendimento)" [checked]="atendimento._id == atendimentoSelecionado._id"> {{ atendimento.nome }}
               </label>
             </div>
           </div>
@@ -297,12 +297,12 @@
             <label>Transporte:</label>
             <div class="radio" *ngFor="let transporte of transportes">
               <label>
-                <input type="radio" name="transporte" [ngModel]="{checked: transporte._id == transporteSelecionado._id }" (change)="onTransporteChange(transporte)"> {{ transporte.nome }}
+                <input type="radio" name="transporte" (change)="onTransporteChange(transporte)" [checked]="transporte._id == transporteSelecionado._id"> {{ transporte.nome }}
               </label>
             </div>
           </div>
         </div>
-      </div>-->
+      </div>
 
       <div *ngIf="auth.isAdmin()">
         <div class="form-group">
@@ -326,11 +326,7 @@
       </div>
 
     </div>
-
-  </div>
-
-  <div style="text-align:right">
-    <button type="submit" class="btn btn-primary">Salvar</button>
+  
   </div>
 
 </form>

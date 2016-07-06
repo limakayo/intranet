@@ -1,5 +1,41 @@
 export class Ordem {
+
 	constructor(
-		public id: number,
-		public numero: number){}
+		public _id: string,
+		public numero: number,
+		public aprovacao: number,
+		public andamento: string,
+		public createdAt: Date,
+		public data_hora_aprovacao: Date,
+		public data_hora_entregue: Date,
+		public data_hora_fechado: Date,
+		public data_hora_orcamento: Date,
+		public data_hora_pronto: Date,
+		public data_pagamento: string,
+		public defeito: string,
+		public defeito_tecnico: string,
+		public solucao: string,
+		public solucao_tecnica: string,
+		public pecas: string,
+		public forma_pagamento: string,
+		public numero_nfe: string,
+		public observacoes: string,
+		public origem: string,
+		public serie: string,
+		public tecnico: string,
+		public updatedAt: Date,
+		public valor_mo: string,
+		public valor_pecas: string,
+		public valor_total: string,
+		public pronto: boolean,
+		public fechado: boolean,
+		public entregue: boolean,
+		public prazo: string,
+		public condicao: string,
+		public cliente: Object,
+		public equipamento: Object,
+		public acessorios: Object[],
+		public atendimento: Object,
+		public transporte: Object){}
+
 }

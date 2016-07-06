@@ -7,6 +7,8 @@ import { AcessorioService } from '../../acessorios/acessorio.service';
 import { AtendimentoService } from '../../atendimentos/atendimento.service';
 import { TransporteService } from '../../transportes/transporte.service';
 import { AuthService } from '../../shared/auth.service';
+
+import { Ordem } from '../shared/ordem.model';
 import { MenuAdminComponent } from './menu-admin.component';
 
 import { Currency } from '../shared/currency';
@@ -29,17 +31,12 @@ import { tokenNotExpired } from 'angular2-jwt';
 })
 export class ControleComponent implements OnInit, OnDestroy {
 
-	ordem: any;
+	ordem: Ordem;
 
 	msgs: Message[] = [];
 
 	user: any;
 
-	numero: number;
-
-	pronto: boolean;
-	fechado: boolean;
-	entregue: boolean;
 	andamento: string;
 
 	aprovacoes: any[] = [
@@ -121,20 +118,20 @@ export class ControleComponent implements OnInit, OnDestroy {
 				if (data.ordem) {
 					this.setAcessorios(data.ordem.acessorios);
 					this.ordem = data.ordem;
-					this.numero = data.ordem.numero;
+					this.ordem.numero = data.ordem.numero;
 					this.errorMessage = null;
 					this.atendimentoSelecionado = data.ordem.atendimento;
 					this.transporteSelecionado = data.ordem.transporte;
 					if (data.ordem.aprovacao)
 						this.aprovacaoSelecionada = this.aprovacoes.filter(a => a.id == data.ordem.aprovacao)[0];
 					if (data.ordem.data_hora_pronto) {
-						this.pronto = true;
+						this.ordem.pronto = true;
 					}
 					if (data.ordem.data_hora_fechado) {
-						this.fechado = true;
+						this.ordem.fechado = true;
 					}
 					if (data.ordem.data_hora_entregue) {
-						this.entregue = true;
+						this.ordem.entregue = true;
 					}
 				} else {
 					this.ordem = null;
@@ -156,8 +153,8 @@ export class ControleComponent implements OnInit, OnDestroy {
 		return false;
 	}
 
-	onSubmit(form:any) {
-		console.log(form);
+	isGarantia() {
+		return this.atendimentoSelecionado.nome.localeCompare('Garantia') == 0;
 	}
 
 	updateOrdem(form:any) {
@@ -214,17 +211,17 @@ export class ControleComponent implements OnInit, OnDestroy {
 		}
 
 		// Pronto
-		if (!this.pronto) {
+		if (!this.ordem.pronto) {
 			form.data_hora_pronto = null;
 		} else if (!this.ordem.data_hora_pronto) {
 			form.data_hora_pronto = new Date;
 		}
 
 		// Fechado
-		if (!this.fechado) {
+		if (!this.ordem.fechado) {
 			form.data_hora_fechado = null;
 			form.data_hora_entregue = null;
-			this.entregue = false;
+			this.ordem.entregue = false;
 		} else if (!this.ordem.data_hora_fechado) {
 			form.data_hora_fechado = new Date;
 			this.andamento = 'Fechada';
@@ -233,7 +230,7 @@ export class ControleComponent implements OnInit, OnDestroy {
 		}
 
 		// Entregue
-		if (!this.entregue) {
+		if (!this.ordem.entregue) {
 			form.data_hora_entregue = null;
 		} else if (!this.ordem.data_hora_entregue) {
 			form.data_hora_entregue = new Date;
@@ -248,10 +245,9 @@ export class ControleComponent implements OnInit, OnDestroy {
 		form.aprovacao = this.aprovacaoSelecionada.id;
 		form.andamento = this.andamento;
 
-		console.log(form);
-
 		this.ordemService.editOrdem(form).subscribe(
 			ordem => {
+				console.log(ordem);
 				this.ordem = ordem;
 				this.updateMenu();
 				this.showInfo();
@@ -282,15 +278,16 @@ export class ControleComponent implements OnInit, OnDestroy {
 	}
 
 	onFechadoChange(fechado:any) {
+		this.ordem.fechado = fechado;
 		this.andamento = 'Fechada';
 	}
 
 	onEntregueChange(entregue:any) {
-		console.log(entregue);
+		this.ordem.entregue = entregue;
 	}
 
 	onProntoChange(pronto:any) {
-		console.log(pronto);
+		this.ordem.pronto = pronto;
 	}
 
 	onAcessorioChange(acessorio: any) {

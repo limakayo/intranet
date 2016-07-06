@@ -1,5 +1,5 @@
-import { Component, Provider, forwardRef } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, CORE_DIRECTIVES } from '@angular/common';
+import { Component, Input, Provider, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 const noop = () => {};
 
@@ -12,12 +12,12 @@ const MASK_VALUE_ACCESSOR = new Provider(
 
 @Component({
   selector: 'my-mask',
-  template: '<input class="form-control" [(ngModel)]="value" name="value" (keydown)="onKeyDown($event)" (keyup)="onKeyUp($event)">',
-  providers: [ MASK_VALUE_ACCESSOR ],
-  directives: [ CORE_DIRECTIVES ]
+  template: '<input class="form-control controle-valores" [(ngModel)]="value" [readOnly]="readonly" (keydown)="onKeyDown($event)" (keyup)="onKeyUp($event)">',
+  providers: [ MASK_VALUE_ACCESSOR ]
 })
 export class Currency implements ControlValueAccessor {
 
+  @Input() readonly:boolean = false;
   private _value: string = '';
   selectedValue: string;
 

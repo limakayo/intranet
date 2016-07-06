@@ -18,6 +18,10 @@
   border-bottom-right-radius: 0px;
 }
 
+.controle-valores {
+  text-align: right;
+}
+
 .valor {
   text-align: right;
 }
